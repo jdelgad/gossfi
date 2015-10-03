@@ -15,9 +15,12 @@ func TestNewTxtFile(t *testing.T) {
 		"to",
 		"for",
 		"testing",
+		"testing",
+		"testing",
+		"testing",
 	}
 
-	readInWords, err := Read("../unit_test/files/new.txt")
+	readInWords, err := GetWords("../unit_test/files/new.txt")
 	assert.EqualValues(t, words, readInWords)
 	assert.Nil(t, err)
 }
