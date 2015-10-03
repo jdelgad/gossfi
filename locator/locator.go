@@ -1,7 +1,8 @@
 package locator
+
 import (
-	"path/filepath"
 	"os"
+	"path/filepath"
 )
 
 var ext string
@@ -19,7 +20,7 @@ func isTextFile(fp string, fi os.FileInfo, err error) error {
 	return nil
 }
 
-func FindTextFiles(d, e string, fileCh chan string)  {
+func FindTextFiles(d, e string, fileCh chan string) {
 	ext = e
 	inputFileCh = fileCh
 	filepath.Walk(d, isTextFile)

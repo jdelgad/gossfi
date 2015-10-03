@@ -1,7 +1,8 @@
 package locator
+
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestTxtFiles(t *testing.T) {
