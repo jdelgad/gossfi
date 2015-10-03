@@ -4,24 +4,24 @@ import (
 	"os"
 )
 
-var glob string
-var txtFiles []string
+var ext string
+var inputFileCh chan string
 
 func isTextFile(fp string, fi os.FileInfo, err error) error {
 	if err != nil {
 		return nil
 	}
 
-	if !fi.IsDir() && filepath.Ext(fp) == glob {
-		txtFiles = append(txtFiles, fp)
-		return nil
+	if !fi.IsDir() && filepath.Ext(fp) == ext {
+		inputFileCh <- fp
 	}
 
 	return nil
 }
 
-func FindTextFiles(d, g string) []string {
-	glob = g
+func FindTextFiles(d, e string, fileCh chan string)  {
+	ext = e
+	inputFileCh = fileCh
 	filepath.Walk(d, isTextFile)
-	return txtFiles
+	close(inputFileCh)
 }
