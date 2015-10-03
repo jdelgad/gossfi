@@ -3,21 +3,30 @@ package reader
 import (
 	"bufio"
 	"os"
+	"fmt"
 )
 
-func GetWords(f string) ([]string, error) {
-	var words []string
-	file, err := os.Open(f)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
+func GetWords(fCh, wdCh chan string, closeCh chan bool) {
+	for {
+		select {
+		case f := <- fCh:
+			fmt.Printf("Parsing %s", f)
+			file, err := os.Open(f)
+			if err != nil {
+				return
+			}
 
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanWords)
-	for scanner.Scan() {
-		words = append(words, scanner.Text())
-	}
+			scanner := bufio.NewScanner(file)
+			scanner.Split(bufio.ScanWords)
+			for scanner.Scan() {
+				fmt.Printf("Putting %s on wdCh", scanner.Text())
+				wdCh <- scanner.Text()
+			}
 
-	return words, nil
+			file.Close()
+		case <- closeCh:
+			close(wdCh)
+			return
+		}
+	}
 }
