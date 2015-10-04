@@ -11,7 +11,6 @@ func pushWords(w []string, wdCh chan string) {
 		fmt.Printf("sending word = %s\n", value)
 		wdCh <- value
 	}
-	close(wdCh)
 }
 
 func TestAccumulate(t *testing.T) {
@@ -29,6 +28,7 @@ func TestAccumulate(t *testing.T) {
 
 	closeCh <- true
 	close(closeCh)
+	close(wdCh)
 
 	assert.Equal(t, wMap, words)
 }
