@@ -2,14 +2,14 @@ package reader
 
 import (
 	"bufio"
-	"os"
 	"fmt"
+	"os"
 )
 
 func GetWords(fCh, wdCh chan string, closeCh chan bool) {
 	for {
 		select {
-		case f := <- fCh:
+		case f := <-fCh:
 			fmt.Printf("Parsing %s", f)
 			file, err := os.Open(f)
 			if err != nil {
@@ -24,7 +24,7 @@ func GetWords(fCh, wdCh chan string, closeCh chan bool) {
 			}
 
 			file.Close()
-		case <- closeCh:
+		case <-closeCh:
 			close(wdCh)
 			return
 		}

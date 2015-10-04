@@ -1,8 +1,9 @@
 package accumulator
+
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
 	"fmt"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func pushWords(w []string, wdCh chan string) {

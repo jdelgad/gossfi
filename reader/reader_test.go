@@ -1,9 +1,9 @@
 package reader
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"fmt"
 )
 
 var readInWords []string
@@ -40,7 +40,6 @@ func TestNewTxtFile(t *testing.T) {
 
 	fCh <- file
 	closeCh <- true
-
 
 	assert.EqualValues(t, words, readInWords)
 }
