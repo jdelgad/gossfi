@@ -25,7 +25,6 @@ func GetWords(fCh, wdCh chan string, wg *sync.WaitGroup) {
 
 				file.Close()
 			} else {
-				close(wdCh)
 				return
 			}
 		}
