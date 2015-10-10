@@ -45,7 +45,7 @@ func TestOrderWordsByCount(t *testing.T) {
 	wc[1] = WordCountPair{"boom", 2}
 	wc[2] = WordCountPair{"hi", 1}
 
-	wordCount := OrderWordsByCount()
+	wordCount := orderWordsByCount()
 	assert.Equal(t, wordCount, wc)
 }
 
@@ -54,7 +54,7 @@ func TestOrderWordsByCountEmpty(t *testing.T) {
 
 	wc := make(WordCount, 0)
 
-	wordCount := OrderWordsByCount()
+	wordCount := orderWordsByCount()
 	assert.Equal(t, wordCount, wc)
 }
 
@@ -71,6 +71,6 @@ func TestOrderWordsByCountEquality(t *testing.T) {
 	wc[2] = WordCountPair{"ok", 2}
 	wc[3] = WordCountPair{"hi", 1}
 
-	wordCount := OrderWordsByCount()
+	wordCount := orderWordsByCount()
 	assert.Equal(t, wordCount, wc)
 }

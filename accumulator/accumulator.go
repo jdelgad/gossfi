@@ -3,6 +3,7 @@ package accumulator
 import (
 	"sort"
 	"sync"
+	"fmt"
 )
 
 type WordCountPair struct {
@@ -41,7 +42,7 @@ func Accumulate(wdCh chan string, wg *sync.WaitGroup) {
 	}
 }
 
-func OrderWordsByCount() WordCount {
+func orderWordsByCount() WordCount {
 	w := make(WordCount, len(words))
 	i := 0
 	for word, count := range words {
@@ -50,4 +51,13 @@ func OrderWordsByCount() WordCount {
 	}
 	sort.Sort(sort.Reverse(w))
 	return w
+}
+
+func PrintTopWords(n int) {
+	i := 0
+	w := orderWordsByCount()
+	for i < n {
+		fmt.Printf("%s: %d\n", w[i].Word, w[i].Count)
+		i++
+	}
 }
