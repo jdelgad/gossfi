@@ -43,7 +43,6 @@ func TestNewTxtFile(t *testing.T) {
 	close(fCh)
 
 	wg.Wait()
-	close(wdCh)
 
 	assert.EqualValues(t, words, readInWords)
 }
