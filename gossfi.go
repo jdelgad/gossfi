@@ -12,10 +12,17 @@ func main() {
 	fileCh := make(chan string)
 	wordCh := make(chan string)
 
-	wg.Add(3)
+	wg.Add(2)
 	go accumulator.Accumulate(wordCh, &wg)
-	go reader.GetWords(fileCh, wordCh, &wg)
 	go locator.FindTextFiles("unit_test", ".txt", fileCh, &wg)
+
+	var rwg sync.WaitGroup
+	rwg.Add(3)
+	go reader.GetWords(fileCh, wordCh, &rwg)
+	go reader.GetWords(fileCh, wordCh, &rwg)
+	go reader.GetWords(fileCh, wordCh, &rwg)
+	rwg.Wait()
+	close(wordCh)
 
 	wg.Wait()
 
