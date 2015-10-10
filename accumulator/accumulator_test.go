@@ -1,16 +1,16 @@
 package accumulator
 
 import (
-	"fmt"
 	"github.com/stretchr/testify/assert"
+	"sync"
 	"testing"
 )
 
 func pushWords(w []string, wdCh chan string) {
 	for _, value := range w {
-		fmt.Printf("sending word = %s\n", value)
 		wdCh <- value
 	}
+	close(wdCh)
 }
 
 func TestAccumulate(t *testing.T) {
@@ -21,14 +21,15 @@ func TestAccumulate(t *testing.T) {
 	wMap["three"] = 1
 
 	wdCh := make(chan string)
-	closeCh := make(chan bool)
 
-	go Accumulate(wdCh, closeCh)
-	pushWords(sendWords, wdCh)
+	var wg sync.WaitGroup
+	wg.Add(1)
 
-	closeCh <- true
-	close(closeCh)
-	close(wdCh)
+	go Accumulate(wdCh, &wg)
+
+	go pushWords(sendWords, wdCh)
+
+	wg.Wait()
 
 	assert.Equal(t, wMap, words)
 }

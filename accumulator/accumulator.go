@@ -1,8 +1,8 @@
 package accumulator
 
 import (
-	"fmt"
 	"sort"
+	"sync"
 )
 
 type WordCountPair struct {
@@ -26,15 +26,17 @@ func (wc WordCount) Swap(i, j int) {
 
 var words map[string]int
 
-func Accumulate(wdCh chan string, closeCh chan bool) {
+func Accumulate(wdCh chan string, wg *sync.WaitGroup) {
+	defer wg.Done()
 	words = make(map[string]int)
 	for {
 		select {
-		case word := <-wdCh:
-			fmt.Printf("word = %s\n", word)
-			words[word]++
-		case <-closeCh:
-			return
+		case word, ok := <-wdCh:
+			if ok {
+				words[word]++
+			} else {
+				return
+			}
 		}
 	}
 }
