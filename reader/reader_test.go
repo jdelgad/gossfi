@@ -1,8 +1,8 @@
 package reader
 
 import (
-	"fmt"
 	"github.com/stretchr/testify/assert"
+	"sync"
 	"testing"
 )
 
@@ -10,7 +10,6 @@ var readInWords []string
 
 func readWordChannel(wdCh chan string) {
 	for word := range wdCh {
-		fmt.Printf("looping in wdCh")
 		readInWords = append(readInWords, word)
 	}
 }
@@ -33,13 +32,18 @@ func TestNewTxtFile(t *testing.T) {
 	file := "../unit_test/files/new.txt"
 	fCh := make(chan string)
 	wdCh := make(chan string)
-	closeCh := make(chan bool)
+
+	var wg sync.WaitGroup
+	wg.Add(1)
 
 	go readWordChannel(wdCh)
-	go GetWords(fCh, wdCh, closeCh)
+	go GetWords(fCh, wdCh, &wg)
 
 	fCh <- file
-	closeCh <- true
+	close(fCh)
+
+	wg.Wait()
+	close(wdCh)
 
 	assert.EqualValues(t, words, readInWords)
 }
