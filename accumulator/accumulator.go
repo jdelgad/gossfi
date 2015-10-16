@@ -1,9 +1,9 @@
 package accumulator
 
 import (
+	"fmt"
 	"sort"
 	"sync"
-	"fmt"
 )
 
 type WordCountPair struct {

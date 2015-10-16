@@ -1,10 +1,11 @@
 package main
 
 import (
+	"sync"
+
 	"github.com/jdelgad/gossfi/accumulator"
 	"github.com/jdelgad/gossfi/locator"
 	"github.com/jdelgad/gossfi/reader"
-	"sync"
 )
 
 func main() {
